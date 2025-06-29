@@ -93,10 +93,25 @@ loader.load(
       }
     });
     scene.add(object);
+
+    // ❌ Ocultar el loader al terminar
+    const loaderDiv = document.getElementById("loader");
+    if (loaderDiv) loaderDiv.style.display = "none";
   },
-  undefined,
+  function (xhr) {
+    // ✅ Mostrar progreso si deseas (opcional)
+    // const percent = (xhr.loaded / xhr.total) * 100;
+    const loadingText = document.getElementById("loading-text");
+    if (loadingText && xhr.lengthComputable) {
+      loadingText.textContent = `Cargando modelo ...`;
+    }
+  },
   function (error) {
     console.error("Error al cargar el GLB:", error);
+    const loadingText = document.getElementById("loading-text");
+    if (loadingText) {
+      loadingText.textContent = "Error al cargar el modelo.";
+    }
   }
 );
 
